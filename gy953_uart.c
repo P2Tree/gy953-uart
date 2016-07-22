@@ -21,6 +21,7 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
 
     newtio.c_cflag |= CLOCAL | CREAD;
     newtio.c_iflag &= ~(INPCK | ISTRIP | IUCLC);
+    newtio.c_lflag &= ~(ICANON | ECHO);
 
     // set data bits
     switch(nBits) {

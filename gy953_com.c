@@ -86,10 +86,10 @@ int constructCommand(int hexCommand, unsigned char *command) {
 }
 
 int sendCommand(int fd, unsigned char *command, unsigned int len) {
-    if (!write(fd, command, len))
-        return -1;
+    int flag;
+    flag = write(fd, command, len);
     tcflush(fd, TCOFLUSH);
-    return 0;
+    return flag;
 }
 
 int receiveData(int fd, unsigned char *command, unsigned int maxlen) {
