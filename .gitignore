@@ -1,3 +1,6 @@
+# My added
+*.sh
+
 # Object files
 *.o
 *.ko
