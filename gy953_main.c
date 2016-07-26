@@ -17,12 +17,11 @@ int main(int argc, char *argv[])
     int i;
     char recData[MAXLEN];
     int receiveLen = 0;
-    unsigned char sendData[WRITELEN]; 
+    unsigned char sendData[WRITELEN] = "\0"; 
     int accData1, accData2, accData3;
     float angle_x, angle_y, angle_z;
     int wflag;
     fd = uartInit();
-    sendData = (unsigned char*)calloc(3, sizeof(unsigned char));
 
     /* constructCommand(AUTODATA_ACCELEROMETER, sendData); */
     /* constructCommand(AUTODATA_EULERANGLE, sendData); */
