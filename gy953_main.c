@@ -1,7 +1,6 @@
 /**
  * @file    gy953_main.c
- * @brief   simple test for gy953 control. This file is used to contect with gy953 module with the dependent files in the follow list; Basic test is request euler angles of three axle from gy953 module.
- * @dependent files:    gy953_uart.c gy953_com.c
+ * @brief   simple test for gy953 control. This file is used to contect with gy953 module with the dependent files in the follow list; Basic test is request euler angles of three axle from gy953 module.  * @dependent files:    gy953_uart.c gy953_com.c
  * @author  PWE dicksonliuming@gmail.com
  *
  * *******************************************************************/
