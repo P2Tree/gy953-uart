@@ -1,3 +1,11 @@
+/**
+ * @file    gy953_main.c
+ * @brief   simple test for gy953 control. This file is used to contect with gy953 module with the dependent files in the follow list; Basic test is request euler angles of three axle from gy953 module.
+ * @dependent files:    gy953_uart.c gy953_com.c
+ * @author  PWE dicksonliuming@gmail.com
+ *
+ * *******************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>        // POSIX terminal input/output header
@@ -10,7 +18,7 @@ int main(int argc, char *argv[])
     int i;
     char recData[MAXLEN];
     int receiveLen = 0;
-    unsigned char *sendData; 
+    unsigned char sendData[WRITELEN]; 
     int accData1, accData2, accData3;
     float angle_x, angle_y, angle_z;
     int wflag;
@@ -26,13 +34,16 @@ int main(int argc, char *argv[])
         if (-1 == wflag) {
             printf("wflag = %d", wflag);
             printf("send error\n");
+            for (i=0; i<wflag; i++)
+                printf("%02x ", sendData[i]);
+            printf("\n");
+            printf("---\n");
             continue;
         }
-        printf("wflag = %d", wflag);
-        printf("send.\n");
-        /* usleep(100000); */
+        /* printf("send.\n"); */
         receiveLen = receiveData(fd, recData, MAXLEN);
         if ( -1 == analysisEulerangle(recData, receiveLen, &angle_x, &angle_y, &angle_z)) {
+            printf("receive error\n");
             printf("receiveLen: %d\n", receiveLen);
             for (i=0; i<receiveLen; i++)
                 printf("%02x ", recData[i]);

@@ -38,6 +38,10 @@ int set_opt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
         perror("Backup SerialSetting");
         return -1;
     }
+    newtio.c_cflag = 0;
+    newtio.c_iflag = 0;
+    newtio.c_oflag = 0;
+    newtio.c_lflag = 0;
 
     newtio.c_cflag |= CLOCAL |          // set local tty, to ignore
                                         //moderm status line to open

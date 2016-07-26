@@ -1,9 +1,9 @@
  /**
-  * \file   uart-test.c
-  * \brief  This file is only used to check your UART in your ARM board
+  * @file   uart-test.c
+  * @brief  This file is only used to check your UART in your ARM board
   *         is well enough to work.
-  * \brief  I will use too much annotations to show every action in UART.
-  * \author Yang Liuming <dicksonliuming@gmail.com>
+  * @brief  I will use too much annotations to show every action in UART.
+  * @author Yang Liuming <dicksonliuming@gmail.com>
   *
   *************************************************************/
 #include <stdio.h>          // standard input/output header
@@ -19,9 +19,17 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
         return -1;
     }
 
-    newtio.c_cflag |= CLOCAL | CREAD;
-    newtio.c_iflag &= ~(INPCK | ISTRIP | IUCLC);
-    newtio.c_lflag &= ~(ICANON | ECHO);
+    printf("old cflag = %x\n", oldtio.c_cflag);
+    printf("old iflag = %x\n", oldtio.c_iflag);
+    printf("old lflag = %x\n", oldtio.c_lflag);
+    printf("old oflag = %x\n", oldtio.c_oflag);
+
+    newtio.c_cflag = 0;
+    newtio.c_iflag = 0;
+    newtio.c_lflag = 0;
+    newtio.c_oflag = 0;
+
+    newtio.c_cflag |= CLOCAL | CREAD ;
 
     // set data bits
     switch(nBits) {
@@ -30,7 +38,7 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
         newtio.c_cflag |= CS7;              // set data bits to 7 bits
         break;
     case 8:
-        newtio.c_cflag &= ~CSIZE;           // zero data bits control
+        newtio.c_cflag &= ~CSIZE;           // zero data bits control;
         newtio.c_cflag |= CS8;              // set data bits to 8 bits
         break;
     default:
@@ -87,8 +95,6 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
     newtio.c_cc[VMIN] = 0;              // min receive data
 
     tcflush(fd, TCIOFLUSH);             // before clean input & output buffer
-    //tcflush(fd, TCIFLUSH);
-    //tcflush(fd, TCOFLUSH);
 
     if ((tcsetattr(fd, TCSANOW, &newtio)) != 0) {   // set argument and take effect at once
         tcsetattr(fd, TCSANOW, &oldtio);    // if wrong, get the old settings
@@ -97,6 +103,10 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
     }
 
     tcflush(fd, TCIOFLUSH);             // after clean input & output buffer
+    printf("new cflag = %x\n", newtio.c_cflag);
+    printf("new iflag = %x\n", newtio.c_iflag);
+    printf("new lflag = %x\n", newtio.c_lflag);
+    printf("new oflag = %x\n", newtio.c_oflag);
 
     printf("set down!\n");
     return 0;
@@ -105,7 +115,7 @@ int setOpt(int fd, int nSpeed, int nBits, char nEvent, int nStop) {
 int openPort() {
     int fd;
     int flag;
-    if (-1 == (fd = open("/dev/ttymxc2",
+    if (-1 == (fd = open("/dev/ttymxc3",
                         O_RDWR |            // file open with read & write
                         O_NOCTTY |          // if device is a tty, do not
                                             //allow it as a control tty.
